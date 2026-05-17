@@ -55,6 +55,8 @@ jobs:
 
       - name: Build project
         working-directory: ./client
+        env:
+          GITHUB_ACTIONS: true
         run: npm run build
 
       - name: Upload Pages artifact
