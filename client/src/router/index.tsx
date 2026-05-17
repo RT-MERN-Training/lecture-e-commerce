@@ -23,38 +23,41 @@ const withBoundary = (name: string, children: ReactNode) => (
   </RouteErrorBoundary>
 );
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    errorElement: <GlobalErrorPage />,
-    children: [
-      { index: true, element: withBoundary("Home", <Home />) },
-      { path: "products", element: withBoundary("Products", <Products />) },
-      {
-        path: "products/:id",
-        element: withBoundary("ProductDetail", <ProductDetail />),
-      },
-      { path: "login", element: withBoundary("Login", <Login />) },
-      { path: "signup", element: withBoundary("Signup", <Signup />) },
-      {
-        path: "cart",
-        element: withBoundary(
-          "Cart",
-          <ProtectedRoute>
-            <Cart />
-          </ProtectedRoute>,
-        ),
-      },
-      {
-        path: "settings",
-        element: withBoundary(
-          "Settings",
-          <ProtectedRoute>
-            <Settings />
-          </ProtectedRoute>,
-        ),
-      },
-    ],
-  },
-]);
+export const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <RootLayout />,
+      errorElement: <GlobalErrorPage />,
+      children: [
+        { index: true, element: withBoundary("Home", <Home />) },
+        { path: "products", element: withBoundary("Products", <Products />) },
+        {
+          path: "products/:id",
+          element: withBoundary("ProductDetail", <ProductDetail />),
+        },
+        { path: "login", element: withBoundary("Login", <Login />) },
+        { path: "signup", element: withBoundary("Signup", <Signup />) },
+        {
+          path: "cart",
+          element: withBoundary(
+            "Cart",
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>,
+          ),
+        },
+        {
+          path: "settings",
+          element: withBoundary(
+            "Settings",
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>,
+          ),
+        },
+      ],
+    },
+  ],
+  { basename: "/lecture-e-commerce" },
+);
