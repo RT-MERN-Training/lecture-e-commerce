@@ -1,5 +1,5 @@
-import axiosClient from '../../lib/axiosClient';
-import type { User } from './types';
+import axiosClient from "../../lib/axiosClient";
+import type { User } from "./types";
 
 export interface LoginPayload {
   username: string;
@@ -18,7 +18,7 @@ export interface AuthResponse {
 }
 
 export const login = async (payload: LoginPayload): Promise<AuthResponse> => {
-  const response = await axiosClient.post<AuthResponse>('/auth/login', {
+  const response = await axiosClient.post<AuthResponse>("/auth/login", {
     username: payload.username,
     password: payload.password,
     expiresInMins: 60,
@@ -27,12 +27,12 @@ export const login = async (payload: LoginPayload): Promise<AuthResponse> => {
 };
 
 export const getMe = async (): Promise<User> => {
-  const response = await axiosClient.get<User>('/auth/me');
+  const response = await axiosClient.get<User>("/auth/me");
   return response.data;
 };
 
 export const refreshToken = async (token: string): Promise<AuthResponse> => {
-  const response = await axiosClient.post<AuthResponse>('/auth/refresh', {
+  const response = await axiosClient.post<AuthResponse>("/auth/refresh", {
     refreshToken: token,
     expiresInMins: 60,
   });
