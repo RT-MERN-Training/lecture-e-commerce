@@ -1,12 +1,12 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react-swc";
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.GITHUB_ACTIONS ? '/lecture-e-commerce/' : '/',
+  base: "/lecture-e-commerce/",
   test: {
     globals: true,
-    environment: 'jsdom',
-    exclude: ['node_modules', 'dist', 'e2e'],
+    environment: "jsdom",
+    exclude: ["node_modules", "dist", "e2e"],
   },
 });
