@@ -7,8 +7,8 @@
 import "dotenv/config";
 import bcrypt from "bcrypt";
 import { sql } from "drizzle-orm";
-import { db, pool } from "./index";
-import { users, products, carts, cartItems } from "./schema";
+import { db, pool } from "../index";
+import { users, products, carts, cartItems } from "../schema";
 import rawProducts from "./products.json";
 import rawUsers from "./users.json";
 
