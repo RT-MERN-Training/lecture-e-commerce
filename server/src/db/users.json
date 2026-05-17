@@ -1,0 +1,22 @@
+[
+  {
+    "username": "emilys",
+    "email": "emily.johnson@x.dummyjson.com",
+    "plainPassword": "emilyspass",
+    "role": "admin",
+    "firstName": "Emily",
+    "lastName": "Johnson",
+    "phone": "+81 965-431-3024",
+    "image": "https://dummyjson.com/icon/emilys/128"
+  },
+  {
+    "username": "michaelw",
+    "email": "michael.williams@x.dummyjson.com",
+    "plainPassword": "michaelwpass",
+    "role": "admin",
+    "firstName": "Michael",
+    "lastName": "Williams",
+    "phone": "+49 258-627-6644",
+    "image": "https://dummyjson.com/icon/michaelw/128"
+  }
+]
