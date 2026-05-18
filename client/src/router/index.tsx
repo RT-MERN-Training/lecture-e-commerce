@@ -1,5 +1,5 @@
 import { lazy, Suspense, type ReactNode } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, createHashRouter } from "react-router-dom";
 
 import GlobalErrorPage from "../components/errors/GlobalErrorPage";
 import RouteErrorBoundary from "../components/errors/RouteErrorBoundary";
@@ -23,7 +23,7 @@ const withBoundary = (name: string, children: ReactNode) => (
   </RouteErrorBoundary>
 );
 
-export const router = createBrowserRouter(
+export const router = createHashRouter(
   [
     {
       path: "/",
