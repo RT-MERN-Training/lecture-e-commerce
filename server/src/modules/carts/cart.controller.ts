@@ -6,8 +6,9 @@ import {
   addCartItemSchema,
   cartIdParamSchema,
   cartQuerySchema,
+  userIdParamSchema,
+  paginationQuerySchema,
 } from "./validator";
-import { UnauthorizedError } from "../../core/errors";
 
 export class CartController {
   constructor(private readonly carts: CartService = cartService) {}
@@ -29,6 +30,13 @@ export class CartController {
     res.json(cart);
   };
 
+  getCartByUserId = async (req: Request, res: Response) => {
+    const { userId } = userIdParamSchema.parse(req.params);
+    const { skip, limit } = paginationQuerySchema.parse(req.query);
+    const paginatedResponse = await this.carts.getCartByUserIdPaginated(userId, skip, limit);
+    res.json(paginatedResponse);
+  };
+
   create = async (req: Request, res: Response) => {
     const { userId } = createCartSchema.parse(req.body);
     const created = await this.carts.createCart(userId);
@@ -47,13 +55,6 @@ export class CartController {
     const item = addCartItemSchema.parse(req.body);
     const updated = await this.carts.addItem(id, item);
     res.json(updated);
-  };
-
-  // GET /carts/user — returns the calling user's cart (uses JWT userId).
-  myCart = async (req: Request, res: Response) => {
-    if (!req.userId) throw new UnauthorizedError("Not authenticated");
-    const cart = await this.carts.getCartForUser(Number(req.userId));
-    res.json(cart);
   };
 
   remove = async (req: Request, res: Response) => {

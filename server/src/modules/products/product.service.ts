@@ -52,7 +52,7 @@ export class ProductService {
     return toResponse(product);
   }
 
-  async listCategories(): Promise<string[]> {
+  async listCategories(): Promise<{ slug: string; name: string; url: string }[]> {
     return this.products.findAllCategories();
   }
 

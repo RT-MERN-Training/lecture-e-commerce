@@ -28,7 +28,7 @@ const Cart = () => {
     removeCartItemMutation.mutate(productId);
   };
 
-  if (isLoading || !cart) {
+  if (isLoading) {
     return <Spinner />;
   }
 

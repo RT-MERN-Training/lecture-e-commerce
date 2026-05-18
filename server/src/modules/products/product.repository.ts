@@ -30,11 +30,15 @@ export class ProductRepository {
       .where(eq(products.category, category));
   }
 
-  async findAllCategories(): Promise<string[]> {
+  async findAllCategories(): Promise<{ slug: string; name: string; url: string }[]> {
     const rows = await db
       .selectDistinct({ category: products.category })
       .from(products);
-    return rows.map((r) => r.category);
+    return rows.map((r) => ({
+      slug: r.category,
+      name: r.category.replace(/-/g, ' '),
+      url: `/products/category/${r.category}`,
+    }));
   }
 
   async create(data: NewProduct): Promise<Product> {

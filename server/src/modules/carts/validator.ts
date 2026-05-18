@@ -44,3 +44,14 @@ export const cartIdParamSchema = z.object({
 export const cartQuerySchema = z.object({
   userId: z.coerce.number().int().positive().optional(),
 });
+
+// GET /carts/users/:userId param.
+export const userIdParamSchema = z.object({
+  userId: z.coerce.number().int().positive(),
+});
+
+// Pagination query params.
+export const paginationQuerySchema = z.object({
+  skip: z.coerce.number().int().min(0).default(0),
+  limit: z.coerce.number().int().positive().default(10),
+});

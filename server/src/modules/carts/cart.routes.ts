@@ -1,12 +1,10 @@
 import { Router } from "express";
 import cartController from "./cart.controller";
-import { requireAuth } from "../auth/auth.middleware";
 
 const router = Router();
 
-// GET /carts/user — returns the calling user's own cart (auth required).
-// Must come BEFORE /:id to avoid being matched as a param.
-router.get("/user", requireAuth, cartController.myCart);
+// GET /carts/user/:userId — returns cart for a specific user.
+router.get("/user/:userId", cartController.getCartByUserId);
 
 router.get("/", cartController.list);
 router.get("/:id", cartController.getById);

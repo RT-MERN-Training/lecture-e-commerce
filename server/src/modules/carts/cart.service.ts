@@ -2,6 +2,8 @@ import {
   cartRepository,
   CartRepository,
   type CartResponse,
+  type EnrichedCartResponse,
+  type PaginatedCartResponse,
 } from "./cart.repository";
 import { BadRequestError, NotFoundError } from "../../core/errors";
 import type { UpdateCartInput, CartItemInput } from "./validator";
@@ -23,6 +25,25 @@ export class CartService {
     const cart = await this.carts.findByUserId(userId);
     if (!cart) throw new NotFoundError("Cart not found");
     return cart;
+  }
+
+  async getCartByUserIdPaginated(
+    userId: number,
+    skip: number = 0,
+    limit: number = 10,
+  ): Promise<PaginatedCartResponse> {
+    const cart = await this.carts.findByUserIdEnriched(userId);
+    if (!cart) throw new NotFoundError("Cart not found");
+
+    const carts = [cart];
+    const total = 1; // Since we're getting cart for a specific user, there's at most 1 cart
+
+    return {
+      carts,
+      total,
+      skip,
+      limit,
+    };
   }
 
   async createCart(userId: number): Promise<CartResponse> {
