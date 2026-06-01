@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { userService, UserService } from "./user.service";
-import { updateUserSchema, userIdParamSchema } from "./validator";
+import { updateUserSchema, userIdParamSchema, updatePreferencesSchema } from "./validator";
 import { ForbiddenError, UnauthorizedError } from "../../core/errors";
 
 export class UserController {
@@ -38,6 +38,14 @@ export class UserController {
     this.requireSelfOrAdmin(req, id);
     const input = updateUserSchema.parse(req.body);
     const updated = await this.users.updateUser(id, input);
+    res.json(updated);
+  };
+
+  updatePreferences = async (req: Request, res: Response) => {
+    const { id } = userIdParamSchema.parse(req.params);
+    this.requireSelfOrAdmin(req, id);
+    const preferences = updatePreferencesSchema.parse(req.body);
+    const updated = await this.users.updateUserPreferences(id, preferences);
     res.json(updated);
   };
 }

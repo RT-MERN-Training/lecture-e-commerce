@@ -74,6 +74,31 @@ export class ProductService {
     const ok = await this.products.delete(id);
     if (!ok) throw new NotFoundError("Product not found");
   }
+
+  async getProductsByAvailability(status: string): Promise<ProductResponse[]> {
+    const products = await this.products.findByAvailabilityStatus(status);
+    return products.map(toResponse);
+  }
+
+  async getProductsByMinOrderQuantity(minQty: number): Promise<ProductResponse[]> {
+    const products = await this.products.findByMinimumOrderQuantity(minQty);
+    return products.map(toResponse);
+  }
+
+  async updateProductMetadata(
+    id: number,
+    metadata: Partial<NonNullable<Product["metadata"]>>,
+  ): Promise<ProductResponse> {
+    const updated = await this.products.updateMetadata(id, metadata);
+    if (!updated) throw new NotFoundError("Product not found");
+    return toResponse(updated);
+  }
+
+  async addProductImages(id: number, images: string[]): Promise<ProductResponse> {
+    const updated = await this.products.addImages(id, images);
+    if (!updated) throw new NotFoundError("Product not found");
+    return toResponse(updated);
+  }
 }
 
 export const productService = new ProductService();

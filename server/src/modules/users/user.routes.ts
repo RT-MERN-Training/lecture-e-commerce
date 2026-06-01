@@ -10,5 +10,6 @@ router.get("/", userController.list);
 router.get("/:id", userController.getById);
 router.patch("/:id", userController.update);
 router.put("/:id", userController.update);
+router.patch("/:id/preferences", userController.updatePreferences);
 
 export default router;

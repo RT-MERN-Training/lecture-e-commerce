@@ -77,6 +77,30 @@ export class UserService {
     if (!updated) throw new NotFoundError("User not found");
     return updated;
   }
+
+  async getUsersByTheme(theme: "light" | "dark" | "auto"): Promise<SafeUser[]> {
+    const users = await this.users.findByThemePreference(theme);
+    return users.map((u) => this.stripPassword(u));
+  }
+
+  async getUsersByLanguage(language: string): Promise<SafeUser[]> {
+    const users = await this.users.findByLanguagePreference(language);
+    return users.map((u) => this.stripPassword(u));
+  }
+
+  async getUsersWithEmailNotifications(): Promise<SafeUser[]> {
+    const users = await this.users.findWithEmailNotificationsEnabled();
+    return users.map((u) => this.stripPassword(u));
+  }
+
+  async updateUserPreferences(
+    id: number,
+    preferences: Partial<NonNullable<User["preferences"]>>,
+  ): Promise<SafeUser> {
+    const updated = await this.users.updatePreferences(id, preferences);
+    if (!updated) throw new NotFoundError("User not found");
+    return this.stripPassword(updated);
+  }
 }
 
 export const userService = new UserService();

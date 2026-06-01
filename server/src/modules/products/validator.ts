@@ -11,6 +11,24 @@ export const createProductSchema = z.object({
   brand: z.string().min(1).max(100).optional().nullable(),
   category: z.string().min(1).max(100),
   thumbnail: z.url(),
+  images: z.array(z.string().url()).optional(),
+  metadata: z
+    .object({
+      weight: z.number().positive().optional(),
+      dimensions: z
+        .object({
+          width: z.number().positive(),
+          height: z.number().positive(),
+          depth: z.number().positive(),
+        })
+        .optional(),
+      warrantyInformation: z.string().optional(),
+      shippingInformation: z.string().optional(),
+      availabilityStatus: z.string().optional(),
+      returnPolicy: z.string().optional(),
+      minimumOrderQuantity: z.number().int().positive().optional(),
+    })
+    .optional(),
 });
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 
@@ -32,4 +50,24 @@ export const listQuerySchema = z.object({
   skip: z.coerce.number().int().min(0).optional(),
   category: z.string().optional(),
   search: z.string().optional(),
+});
+
+export const updateMetadataSchema = z.object({
+  weight: z.number().positive().optional(),
+  dimensions: z
+    .object({
+      width: z.number().positive(),
+      height: z.number().positive(),
+      depth: z.number().positive(),
+    })
+    .optional(),
+  warrantyInformation: z.string().optional(),
+  shippingInformation: z.string().optional(),
+  availabilityStatus: z.string().optional(),
+  returnPolicy: z.string().optional(),
+  minimumOrderQuantity: z.number().int().positive().optional(),
+});
+
+export const addImagesSchema = z.object({
+  images: z.array(z.string().url()).min(1),
 });

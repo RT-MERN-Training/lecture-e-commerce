@@ -5,6 +5,8 @@ import {
   updateProductSchema,
   productIdParamSchema,
   listQuerySchema,
+  updateMetadataSchema,
+  addImagesSchema,
 } from "./validator";
 
 export class ProductController {
@@ -47,6 +49,20 @@ export class ProductController {
     const { id } = productIdParamSchema.parse(req.params);
     await this.products.deleteProduct(id);
     res.status(204).send();
+  };
+
+  updateMetadata = async (req: Request, res: Response) => {
+    const { id } = productIdParamSchema.parse(req.params);
+    const metadata = updateMetadataSchema.parse(req.body);
+    const updated = await this.products.updateProductMetadata(id, metadata);
+    res.json(updated);
+  };
+
+  addImages = async (req: Request, res: Response) => {
+    const { id } = productIdParamSchema.parse(req.params);
+    const { images } = addImagesSchema.parse(req.body);
+    const updated = await this.products.addProductImages(id, images);
+    res.json(updated);
   };
 }
 

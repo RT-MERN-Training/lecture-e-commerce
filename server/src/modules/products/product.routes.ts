@@ -11,5 +11,7 @@ router.post("/", productController.create);
 router.patch("/:id", productController.update);
 router.put("/:id", productController.update);
 router.delete("/:id", productController.remove);
+router.patch("/:id/metadata", productController.updateMetadata);
+router.post("/:id/images", productController.addImages);
 
 export default router;

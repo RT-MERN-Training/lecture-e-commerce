@@ -19,3 +19,12 @@ export const updateUserSchema = z
     message: "Provide at least one field to update",
   });
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;
+
+export const updatePreferencesSchema = z.object({
+  theme: z.enum(["light", "dark", "auto"]).optional(),
+  language: z.string().optional(),
+  currency: z.string().optional(),
+  emailNotifications: z.boolean().optional(),
+  smsNotifications: z.boolean().optional(),
+  marketingEmails: z.boolean().optional(),
+});

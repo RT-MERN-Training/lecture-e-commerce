@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "../../db";
 import { users, type User, type NewUser } from "./user.schema";
 
@@ -58,6 +58,45 @@ export class UserRepository {
     const [row] = await db
       .update(users)
       .set({ password: hashedPassword })
+      .where(eq(users.id, id))
+      .returning();
+    return row ?? null;
+  }
+
+  async findByThemePreference(
+    theme: "light" | "dark" | "auto",
+  ): Promise<User[]> {
+    return db
+      .select()
+      .from(users)
+      .where(sql`${users.preferences}->>'theme' = ${theme}`);
+  }
+
+  async findByLanguagePreference(language: string): Promise<User[]> {
+    return db
+      .select()
+      .from(users)
+      .where(sql`${users.preferences}->>'language' = ${language}`);
+  }
+
+  async findWithEmailNotificationsEnabled(): Promise<User[]> {
+    return db
+      .select()
+      .from(users)
+      .where(
+        sql`(${users.preferences}->>'emailNotifications')::boolean = true`,
+      );
+  }
+
+  async updatePreferences(
+    id: number,
+    preferences: Partial<NonNullable<User["preferences"]>>,
+  ): Promise<User | null> {
+    const [row] = await db
+      .update(users)
+      .set({
+        preferences: sql`${users.preferences} || ${JSON.stringify(preferences)}::jsonb`,
+      })
       .where(eq(users.id, id))
       .returning();
     return row ?? null;

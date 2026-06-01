@@ -91,6 +91,47 @@ export class ProductRepository {
 
     return { products: rows, total: count };
   }
+
+  async findByAvailabilityStatus(status: string): Promise<Product[]> {
+    return db
+      .select()
+      .from(products)
+      .where(sql`${products.metadata}->>'availabilityStatus' = ${status}`);
+  }
+
+  async findByMinimumOrderQuantity(minQty: number): Promise<Product[]> {
+    return db
+      .select()
+      .from(products)
+      .where(
+        sql`(${products.metadata}->>'minimumOrderQuantity')::int >= ${minQty}`,
+      );
+  }
+
+  async updateMetadata(
+    id: number,
+    metadata: Partial<NonNullable<Product["metadata"]>>,
+  ): Promise<Product | null> {
+    const [row] = await db
+      .update(products)
+      .set({
+        metadata: sql`${products.metadata} || ${JSON.stringify(metadata)}::jsonb`,
+      })
+      .where(eq(products.id, id))
+      .returning();
+    return row ?? null;
+  }
+
+  async addImages(id: number, newImages: string[]): Promise<Product | null> {
+    const [row] = await db
+      .update(products)
+      .set({
+        images: sql`${products.images} || ${JSON.stringify(newImages)}::jsonb`,
+      })
+      .where(eq(products.id, id))
+      .returning();
+    return row ?? null;
+  }
 }
 
 export const productRepository = new ProductRepository();
